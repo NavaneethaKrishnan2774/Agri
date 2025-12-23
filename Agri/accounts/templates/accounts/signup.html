@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Agri Portal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
+                        url("/static/images/login.jpg") no-repeat center center fixed;
+            background-size: cover;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .signup-container {
+            width: 100%;
+            max-width: 500px;
+            animation: fadeIn 0.8s ease;
+        }
+        
+        .signup-box {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .signup-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .signup-header i {
+            font-size: 3.5rem;
+            color: #4CAF50;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .signup-header h1 {
+            color: #2E7D32;
+            font-size: 2.2rem;
+            margin-bottom: 8px;
+        }
+        
+        .signup-header p {
+            color: #666;
+            font-size: 1rem;
+        }
+        
+        .messages {
+            margin-bottom: 25px;
+        }
+        
+        .alert {
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: slideDown 0.5s ease;
+        }
+        
+        .alert-error {
+            background-color: #FFEBEE;
+            color: #C62828;
+            border-left: 4px solid #C62828;
+        }
+        
+        .alert-success {
+            background-color: #E8F5E9;
+            color: #2E7D32;
+            border-left: 4px solid #4CAF50;
+        }
+        
+        .alert-info {
+            background-color: #E3F2FD;
+            color: #1565C0;
+            border-left: 4px solid #2196F3;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #444;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .required::after {
+            content: " *";
+            color: #C62828;
+        }
+        
+        .optional {
+            color: #666;
+            font-size: 0.85rem;
+            font-weight: normal;
+            margin-left: 5px;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4CAF50;
+            font-size: 1.1rem;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #E0E0E0;
+            border-radius: 12px;
+            font-size: 1rem;
+            background: rgba(255, 255, 255, 0.9);
+            transition: all 0.3s ease;
+            color: #333;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.2);
+            background: white;
+        }
+        
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%234CAF50' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 16px;
+            padding-right: 40px;
+            cursor: pointer;
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: #666;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #4CAF50, #2E7D32);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.3);
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(76, 175, 80, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+        
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #E0E0E0;
+            color: #666;
+        }
+        
+        .login-link a {
+            color: #4CAF50;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .form-hint {
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 5px;
+            margin-left: 45px;
+        }
+        
+        .terms-checkbox {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin: 25px 0;
+            padding: 15px;
+            background: #F5F5F5;
+            border-radius: 10px;
+        }
+        
+        .terms-checkbox input {
+            width: auto;
+            margin-top: 5px;
+        }
+        
+        .terms-checkbox label {
+            font-size: 0.9rem;
+            color: #555;
+            line-height: 1.5;
+        }
+        
+        .terms-checkbox a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+        
+        .terms-checkbox a:hover {
+            text-decoration: underline;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @media (max-width: 600px) {
+            .form-row {
+                flex-direction: column;
+                gap: 25px;
+            }
+            
+            .signup-box {
+                padding: 30px 25px;
+            }
+            
+            .signup-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+        
+        .field-info {
+            font-size: 0.8rem;
+            color: #666;
+            margin-top: 5px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-box">
+            <div class="signup-header">
+                <i class="fas fa-user-plus"></i>
+                <h1>Create Account</h1>
+                <p>Join the Agri Portal community</p>
+            </div>
+            
+            <div class="messages">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }}">
+                            {% if message.tags == 'error' %}
+                                <i class="fas fa-exclamation-triangle"></i>
+                            {% elif message.tags == 'success' %}
+                                <i class="fas fa-check-circle"></i>
+                            {% else %}
+                                <i class="fas fa-info-circle"></i>
+                            {% endif %}
+                            <span>{{ message }}</span>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            </div>
+            
+            <form method="POST" id="signupForm">
+                {% csrf_token %}
+                
+                <!-- Full Name (Mandatory) -->
+                <div class="form-group">
+                    <label class="form-label required" for="name">
+                        <i class="fas fa-user"></i> Full Name
+                    </label>
+                    <div style="position: relative;">
+                        <i class="fas fa-signature input-icon"></i>
+                        <input type="text" 
+                               name="name" 
+                               id="name" 
+                               placeholder="Enter your full name"
+                               required
+                               value="{{ request.POST.name|default:'' }}">
+                    </div>
+                    <div class="form-hint">As per official documents</div>
+                </div>
+                
+                <div class="form-row">
+                    <!-- Contact Number (Mandatory) -->
+                    <div class="form-group">
+                        <label class="form-label required" for="contact_number">
+                            <i class="fas fa-mobile-alt"></i> Contact Number
+                        </label>
+                        <div style="position: relative;">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" 
+                                   name="contact_number" 
+                                   id="contact_number" 
+                                   placeholder="10-digit number"
+                                   pattern="[0-9]{10}"
+                                   title="Please enter a valid 10-digit mobile number"
+                                   required
+                                   value="{{ request.POST.contact_number|default:'' }}">
+                        </div>
+                        <div class="field-info">This will be your username for login</div>
+                    </div>
+                    
+                    <!-- WhatsApp Number (Optional) -->
+                    <div class="form-group">
+                        <label class="form-label" for="whatsapp_number">
+                            <i class="fab fa-whatsapp"></i> WhatsApp Number
+                            <span class="optional">(optional)</span>
+                        </label>
+                        <div style="position: relative;">
+                            <i class="fab fa-whatsapp input-icon" style="color: #25D366;"></i>
+                            <input type="tel" 
+                                   name="whatsapp_number" 
+                                   id="whatsapp_number" 
+                                   placeholder="Same as above"
+                                   pattern="[0-9]{10}"
+                                   title="10-digit number"
+                                   value="{{ request.POST.whatsapp_number|default:'' }}">
+                        </div>
+                        <div class="field-info">Leave blank if same as contact number</div>
+                    </div>
+                </div>
+                
+                <!-- Email (Optional) -->
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        <i class="fas fa-envelope"></i> Email Address
+                        <span class="optional">(optional)</span>
+                    </label>
+                    <div style="position: relative;">
+                        <i class="fas fa-at input-icon"></i>
+                        <input type="email" 
+                               name="email" 
+                               id="email" 
+                               placeholder="yourname@example.com"
+                               value="{{ request.POST.email|default:'' }}">
+                    </div>
+                    <div class="field-info">For important notifications and password recovery</div>
+                </div>
+                
+                <!-- Role Selection (Mandatory) -->
+                <div class="form-group">
+                    <label class="form-label required" for="role">
+                        <i class="fas fa-user-tag"></i> Select Role
+                    </label>
+                    <div style="position: relative;">
+                        <i class="fas fa-briefcase input-icon"></i>
+                        <select name="role" id="role" required>
+                            <option value="" disabled selected>-- Choose your role --</option>
+                            <option value="admin" {% if request.POST.role == 'admin' %}selected{% endif %}>Administrator</option>
+                            <option value="farmer" {% if request.POST.role == 'farmer' %}selected{% endif %}>Farmer</option>
+                            <option value="buyer" {% if request.POST.role == 'buyer' %}selected{% endif %}>Buyer/Trader</option>
+                        </select>
+                    </div>
+                    <div class="form-hint">This determines your portal access and features</div>
+                </div>
+                
+                <!-- Password Fields -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label required" for="password">
+                            <i class="fas fa-lock"></i> Password
+                        </label>
+                        <div style="position: relative;">
+                            <i class="fas fa-key input-icon"></i>
+                            <input type="password" 
+                                   name="password" 
+                                   id="password" 
+                                   placeholder="Create a password"
+                                   minlength="6"
+                                   required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="field-info">Minimum 6 characters</div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label required" for="confirm_password">
+                            <i class="fas fa-lock"></i> Confirm Password
+                        </label>
+                        <div style="position: relative;">
+                            <i class="fas fa-key input-icon"></i>
+                            <input type="password" 
+                                   name="confirm_password" 
+                                   id="confirm_password" 
+                                   placeholder="Re-enter password"
+                                   minlength="6"
+                                   required>
+                            <button type="button" class="password-toggle" onclick="togglePassword('confirm_password')">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="field-info">Must match the password</div>
+                    </div>
+                </div>
+                
+                <!-- Terms and Conditions -->
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">
+                        I agree to the <a href="/terms/" target="_blank">Terms and Conditions</a> 
+                        and <a href="/privacy/" target="_blank">Privacy Policy</a>. 
+                        I confirm that all information provided is accurate.
+                    </label>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-user-plus"></i> Create Account
+                </button>
+            </form>
+            
+            <div class="login-link">
+                Already have an account? <a href="/login/">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Toggle password visibility
+        function togglePassword(fieldId) {
+            const field = document.getElementById(fieldId);
+            const toggleBtn = field.nextElementSibling;
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i>';
+            } else {
+                field.type = 'password';
+                toggleBtn.innerHTML = '<i class="fas fa-eye"></i>';
+            }
+        }
+        
+        // Form validation
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            const name = document.getElementById('name').value.trim();
+            const contact = document.getElementById('contact_number').value.trim();
+            const whatsapp = document.getElementById('whatsapp_number').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const role = document.getElementById('role').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirm_password').value;
+            const terms = document.getElementById('terms').checked;
+            
+            // Name validation
+            if (!name || name.length < 2) {
+                alert('Please enter a valid name (minimum 2 characters)');
+                event.preventDefault();
+                return false;
+            }
+            
+            // Contact number validation
+            if (!/^\d{10}$/.test(contact)) {
+                alert('Please enter a valid 10-digit contact number');
+                event.preventDefault();
+                return false;
+            }
+            
+            // WhatsApp number validation (if provided)
+            if (whatsapp && !/^\d{10}$/.test(whatsapp)) {
+                alert('Please enter a valid 10-digit WhatsApp number or leave it blank');
+                event.preventDefault();
+                return false;
+            }
+            
+            // Email validation (if provided)
+            if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                alert('Please enter a valid email address or leave it blank');
+                event.preventDefault();
+                return false;
+            }
+            
+            // Role validation
+            if (!role) {
+                alert('Please select your role');
+                event.preventDefault();
+                return false;
+            }
+            
+            // Password validation
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long');
+                event.preventDefault();
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                event.preventDefault();
+                return false;
+            }
+            
+            // Terms agreement
+            if (!terms) {
+                alert('Please agree to the Terms and Conditions');
+                event.preventDefault();
+                return false;
+            }
+            
+            return true;
+        });
+        
+        // Auto-fill WhatsApp if same as contact number
+        document.getElementById('contact_number').addEventListener('blur', function() {
+            const contact = this.value.trim();
+            const whatsappField = document.getElementById('whatsapp_number');
+            
+            if (contact && !whatsappField.value) {
+                whatsappField.value = contact;
+            }
+        });
+        
+        // Input formatting and restrictions
+        document.getElementById('contact_number').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+        
+        document.getElementById('whatsapp_number').addEventListener('input', function(e) {
+            this.value = this.value.replace(/[^0-9]/g, '');
+            if (this.value.length > 10) {
+                this.value = this.value.slice(0, 10);
+            }
+        });
+        
+        // Add focus effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const inputs = document.querySelectorAll('input, select');
+            inputs.forEach(input => {
+                input.addEventListener('focus', function() {
+                    this.parentElement.style.transform = 'translateY(-2px)';
+                });
+                
+                input.addEventListener('blur', function() {
+                    this.parentElement.style.transform = 'translateY(0)';
+                });
+            });
+            
+            // Auto-focus first field
+            document.getElementById('name').focus();
+        });
+    </script>
+</body>
+</html>

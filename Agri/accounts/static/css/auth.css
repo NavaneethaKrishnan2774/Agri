@@ -1,0 +1,33 @@
+body.bg {
+  background: url('/static/login.jpg') no-repeat center center/cover;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial;
+}
+
+.glass {
+  background: rgba(255,255,255,0.3);
+  backdrop-filter: blur(10px);
+  padding: 30px;
+  border-radius: 15px;
+  width: 350px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 10px;
+  margin: 6px 0;
+}
+
+button {
+  background: green;
+  color: white;
+  border: none;
+  border-radius: 6px;
+}
+label {
+    display: block;
+    margin-top: 10px;
+}
