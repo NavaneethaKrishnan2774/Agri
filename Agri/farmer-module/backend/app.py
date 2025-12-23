@@ -32,8 +32,8 @@ jwt = JWTManager(app)
 
 # Rate Limiting
 limiter = Limiter(
-    app,  # ✅ First positional argument is the Flask app
-    key_func=get_remote_address,  # ✅ 'key_func' is still keyword
+    app=app,  # ✅ 'app' as keyword argument
+    key_func=get_remote_address,  # ✅ 'key_func' specifies the rate limiting function
     default_limits=["200 per day", "50 per hour"],
     storage_uri="memory://",
     strategy="fixed-window"
@@ -168,7 +168,7 @@ def welcome():
     })
 
 # Initialize database tables
-@app.before_first_request
+# CREATE DATABASE TABLES - Moved from deprecated before_first_request
 def create_tables():
     """Create database tables if they don't exist"""
     try:
@@ -220,6 +220,9 @@ except ImportError:
 
 # Application context setup
 with app.app_context():
+    # Create database tables FIRST
+    create_tables()
+    
     # Load fraud detection patterns
     if fraud_detector:
         fraud_detector.load_fraud_patterns()
