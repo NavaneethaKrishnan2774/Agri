@@ -32,10 +32,10 @@ jwt = JWTManager(app)
 
 # Rate Limiting
 limiter = Limiter(
-    get_remote_address,
-    app=app,
+    app,  # ✅ First positional argument is the Flask app
+    key_func=get_remote_address,  # ✅ 'key_func' is still keyword
     default_limits=["200 per day", "50 per hour"],
-    storage_uri="memory://",  # Use Redis in production: f"redis://localhost:6379/0"
+    storage_uri="memory://",
     strategy="fixed-window"
 )
 
